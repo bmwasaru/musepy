@@ -3,7 +3,26 @@ import traceback
 
 
 class wsgiapp:
-    """Base class for my wsgi application."""
+    """
+        HOWTO use
+
+        class application(wsgiapp):
+
+            urls = [
+                ("/", "index"),
+                ("/hello/(.*)", "hello")
+            ]
+
+            def index(self):
+
+                self.header('Content-type', 'text/html')
+                yield "Welcome!\n"
+
+            def hello(self, name):
+                self.header('Content-type', 'text/html')
+                yield "Hello %s\n" % name
+
+    """
     def __init__(self, environ, start_response):
         self.environ = environ
         self.start = start_response
@@ -41,26 +60,3 @@ class wsgiapp:
                 func = getattr(self, funcname)
                 return func(*args)
         return self.not_found()
-
-
-class application(wsgiapp):
-
-    urls = [
-        ("/", "index"),
-        ("/hello/(.*)", "hello")
-    ]
-
-    def index(self):
-
-        self.header('Content-type', 'text/html')
-        yield "Welcome!\n"
-
-    def hello(self, name):
-        self.header('Content-type', 'text/html')
-        yield "Hello %s\n" % name
-
-    def not_found(self):
-        status = "404 Not Found"
-        response_headers = [('Content-type', 'text/html')]
-        self.start(status, response_headers)
-        yield "Not Found!\n"
