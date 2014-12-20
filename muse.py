@@ -3,15 +3,22 @@ class application:
         self.environ = environ
         self.start = start_response
 
-    def __iter__(self):
-        path = self.environ['PATH_INFO']
-        if path == '/':
-            return self.index()
-        elif path == '/hello':
-            return self.hello()
-        else:
-            return self.not_found()
+    urls = [
+        ("/", "index"),
+        ("/hello", "hello")
+    ]
 
+    def __iter__(self):
+        path_info = self.environ['PATH_INFO']
+        method = self.environ['REQUEST_METHOD']
+
+        for path, name  in self.urls:
+            if path == path_info:
+                funcname = method.upper() + "_" + name
+                func = getattr(self, funcname)
+                return func()
+        return self.not_found()
+    
     def index(self):
         status = "200 OK"
         response_headers = [('Content-type', 'text/html')]
