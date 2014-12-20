@@ -1,4 +1,5 @@
 import re
+import traceback
 
 
 class wsgiapp:
@@ -13,8 +14,13 @@ class wsgiapp:
         self._headers.append((name, value))
 
     def __iter__(self):
-        x = self.delegate()
-        self.start(self.status, self._headers)
+        try:
+            x = self.delegate()
+            self.start(self.status, self._headers)
+        except:
+            headers = [('Content-type', 'text/html')]
+            self.start("500 Internal Error", headers)
+            x = "Internal Error:\n\n" + traceback.format_exc()
 
         # return iter in either string or list type of the return value
         if isinstance(x, str):
