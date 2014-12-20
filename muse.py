@@ -2,6 +2,7 @@ import re
 
 
 class wsgiapp:
+    """Base class for my wsgi application."""
     def __init__(self, environ, start_response):
         self.environ = environ
         self.start = start_response
@@ -24,8 +25,7 @@ class wsgiapp:
         return self.not_found()
 
 
-class application:
-
+class application(wsgiapp):
 
     urls = [
         ("/", "index"),
