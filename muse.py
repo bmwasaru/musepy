@@ -1,15 +1,10 @@
 import re
 
 
-class application:
+class wsgiapp:
     def __init__(self, environ, start_response):
         self.environ = environ
         self.start = start_response
-
-    urls = [
-        ("/", "index"),
-        ("/hello/(.*)", "hello")
-    ]
 
     def __iter__(self):
         return self.delegate()
@@ -27,6 +22,15 @@ class application:
                 func = getattr(self, funcname)
                 return func(*args)
         return self.not_found()
+
+
+class application:
+
+
+    urls = [
+        ("/", "index"),
+        ("/hello/(.*)", "hello")
+    ]
 
     def index(self):
         status = "200 OK"
