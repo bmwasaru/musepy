@@ -6,9 +6,21 @@ class wsgiapp:
     def __init__(self, environ, start_response):
         self.environ = environ
         self.start = start_response
+        self.status = "200 OK"
+        self._headers = []
+
+    def header(self, name, value):
+        self._headers.append((name, value))
 
     def __iter__(self):
-        return self.delegate()
+        x = self.delegate()
+        self.start(self.status, self._headers)
+
+        # return iter in either string or list type of the return value
+        if isinstance(x, str):
+            return iter([x])
+        else:
+            return iter(x)
 
     def delegate(self):
         path = self.environ['PATH_INFO']
@@ -33,15 +45,12 @@ class application(wsgiapp):
     ]
 
     def index(self):
-        status = "200 OK"
-        response_headers = [('Content-type', 'text/html')]
-        self.start(status, response_headers)
+
+        self.header('Content-type', 'text/html')
         yield "Welcome!\n"
 
     def hello(self, name):
-        status = "200 OK"
-        response_headers = [('Content-type', 'text/html')]
-        self.start(status, response_headers)
+        self.header('Content-type', 'text/html')
         yield "Hello %s\n" % name
 
     def not_found(self):
