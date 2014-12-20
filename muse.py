@@ -12,6 +12,9 @@ class application:
     ]
 
     def __iter__(self):
+        return self.delegate()
+
+    def delegate(self):
         path = self.environ['PATH_INFO']
         method = self.environ['REQUEST_METHOD']
 
