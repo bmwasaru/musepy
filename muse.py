@@ -28,6 +28,7 @@ class wsgiapp:
         self.start = start_response
         self.status = "200 OK"
         self._headers = []
+        self.urls = []
 
     def header(self, name, value):
         self._headers.append((name, value))
@@ -46,6 +47,12 @@ class wsgiapp:
             return iter([x])
         else:
             return iter(x)
+
+    def not_found(self):
+        status = "404 Not Found"
+        response_headers = ['Content-type', 'text/plain']
+        self.start(status, response_headers)
+        yield "Not Found\n"
 
     def delegate(self):
         path = self.environ['PATH_INFO']
