@@ -5,7 +5,7 @@ with open('requirements.txt') as f:
     required = f.read().splitlines()
 
 setup(
-    name='musepy',
+    name='muse',
     version='0.1',
     description='Python microframework',
     packages=find_packages(exclude=['demo']),
