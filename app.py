@@ -22,3 +22,8 @@ def profile(request, response, name):
 class UsersHandler:
     def get(self, request, response):
         response.text = "Users handler"
+
+
+@app.route('/username/{name}')
+def username(req, resp, name):
+    resp.text = app.template("test_example.html", context={'name': 'bmwasaru'})

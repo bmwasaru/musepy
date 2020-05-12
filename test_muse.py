@@ -73,11 +73,11 @@ def test_alternative_route(muse, client):
 
 def test_templating(muse, client):
 
-    @muse.route('/name')
+    @muse.route('/username')
     def html_view(req, resp):
-        resp.html = muse.template('test_example.html', context={'name': 'Britone'})
+        resp.text = muse.template('test_example.html', context={'name': 'Britone'})
 
-    muse.add_route('/name', html_view)
+    muse.add_route('/username', html_view)
     response = client.get('http://testserver/name')
 
     assert 'text/html' in response.headers['Content-Type']
