@@ -32,8 +32,6 @@ class API:
         else:
             self.default_response(response)
 
-        print(self.routes)
-
         return response
 
     def find_handler(self, request_path):

@@ -1,6 +1,6 @@
-from muse.api import API
+from muse import Muse
 
-app = API()
+app = Muse()
 
 
 @app.route('/home')
