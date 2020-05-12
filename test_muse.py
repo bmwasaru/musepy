@@ -54,3 +54,14 @@ def test_default_404_response(client):
 
     assert response.status_code == 404
     assert response.text == "Not found."
+
+
+def test_alternative_route(muse, client):
+    response_text = "Django style way of adding route"
+
+    def home(req, resp):
+        resp.text = response_text
+
+    muse.add_route('/django-style-route', home)
+
+    assert client.get('http://testserver/django-style-route').text == response_text

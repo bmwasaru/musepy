@@ -11,13 +11,14 @@ class API:
     def __init__(self):
         self.routes = {}
 
-    def route(self, path):
-
+    def add_route(self, path, handler):
         if path in self.routes:
             raise AssertionError("Route already exists.")
+        self.routes[path] = handler
 
+    def route(self, path):
         def wrapper(handler):
-            self.routes[path] = handler
+            self.add_route(path, handler)
             return handler
         return wrapper
 
