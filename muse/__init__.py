@@ -1,1 +1,1 @@
-from .api import API as Muse
+from .api import Muse

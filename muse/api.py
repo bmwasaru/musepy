@@ -6,7 +6,7 @@ from wsgiadapter import WSGIAdapter as RequestsWSGIAdapter
 import inspect
 
 
-class API:
+class Muse:
 
     def __init__(self):
         self.routes = {}
