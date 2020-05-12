@@ -1,1 +1,1 @@
-# a micro python framework
+# python web microframework
