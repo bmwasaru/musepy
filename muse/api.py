@@ -8,6 +8,10 @@ class API:
         self.routes = {}
 
     def route(self, path):
+
+        if path in self.routes:
+            raise AssertionError("Route already exists.")
+
         def wrapper(handler):
             self.routes[path] = handler
             return handler
