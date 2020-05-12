@@ -1,15 +1,19 @@
+import os
+
 from webob import Request, Response
 from parse import parse
 from requests import Session as RequestsSession
 from wsgiadapter import WSGIAdapter as RequestsWSGIAdapter
+from jinja2 import Environment, FileSystemLoader
 
 import inspect
 
 
 class Muse:
 
-    def __init__(self):
+    def __init__(self, templates_dir="templates"):
         self.routes = {}
+        self.templates_env = Environment(loader=FileSystemLoader(os.path.abspath(templates_dir)))
 
     def add_route(self, path, handler):
         if path in self.routes:
@@ -59,3 +63,8 @@ class Muse:
         session = RequestsSession()
         session.mount(prefix=base_url, adapter=RequestsWSGIAdapter(self))
         return session
+
+    def template(self, template_name, context=None):
+        if context is None:
+            context = {}
+        return self.templates_env.get_template(template_name).render(**context)

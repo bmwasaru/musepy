@@ -13,6 +13,10 @@ def client(muse):
     return muse.test_session()
 
 
+def url(s):
+    return f"http://testserver{s}"
+
+
 def test_basic_route(muse):
     @muse.route("/home")
     def home(req, resp):
@@ -65,3 +69,16 @@ def test_alternative_route(muse, client):
     muse.add_route('/django-style-route', home)
 
     assert client.get('http://testserver/django-style-route').text == response_text
+
+
+def test_templating(muse, client):
+
+    @muse.route('/name')
+    def html_view(req, resp):
+        resp.html = muse.template('test_example.html', context={'name': 'Britone'})
+
+    muse.add_route('/name', html_view)
+    response = client.get('http://testserver/name')
+
+    assert 'text/html' in response.headers['Content-Type']
+    assert 'Hello' in response.text
