@@ -13,11 +13,12 @@ def about(request, response):
     response.text = "This is the about page"
 
 
-@app.route('/about/')
-def about2(request, response):
-    response.text = "This is the about page"
-
-
 @app.route('/profile/{name}')
 def profile(request, response, name):
     response.text = f"Hello {name}"
+
+
+@app.route('/users/')
+class UsersHandler:
+    def get(self, request, response):
+        response.text = "Users handler"
