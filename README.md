@@ -11,7 +11,7 @@ pip install -r requirements.txt
 
 ## Running tests
 ```bash
-    pytest test_muse.py
+pytest test_muse.py
 ```
 
 ## Running the demo app
