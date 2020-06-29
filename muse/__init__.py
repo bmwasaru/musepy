@@ -6,16 +6,17 @@ from webob import Request, Response
 from parse import parse
 from requests import Session as RequestsSession
 from wsgiadapter import WSGIAdapter as RequestsWSGIAdapter
-from jinja2 import Environment, FileSystemLoader
 
 import inspect
+
+from .templates import get_template_env
 
 
 class Muse:
 
     def __init__(self, templates_dir="templates"):
         self.routes = {}
-        self.templates_env = Environment(loader=FileSystemLoader(os.path.abspath(templates_dir)))
+        self.templates_env = get_template_env(os.path.abspath(templates_dir))
 
     def add_route(self, path, handler):
         if path in self.routes:
