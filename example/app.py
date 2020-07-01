@@ -3,6 +3,18 @@ from muse import Muse
 app = Muse()
 
 
+def custom_exception_handler(request, response, exception_cls):
+    response.text = "Oopsy! Something went wrong."
+
+
+app.add_exception_handler(custom_exception_handler)
+
+
+@app.route('/exception')
+def exception(request, response):
+    response.text = app.template('oopsy.html')
+
+
 @app.route('/home')
 def home(request, response):
     response.text = "Hello, here is home"
