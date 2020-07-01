@@ -6,6 +6,7 @@ from webob import Request, Response
 from parse import parse
 from requests import Session as RequestsSession
 from wsgiadapter import WSGIAdapter as RequestsWSGIAdapter
+from whitenoise import WhiteNoise
 
 import inspect
 
@@ -18,6 +19,14 @@ class Muse:
         self.routes = {}
         self.templates_env = get_template_env(os.path.abspath(templates_dir))
         self.exception_handler = None
+
+    def wsgi_app(self, environ, start_response):
+        request = Request(environ)
+        response = self.handle_request(request)
+        return response(environ, start_response)
+
+    def __call__(self, environ, start_response):
+        return self.wsgi_app(environ, start_response)
 
     def add_route(self, path, handler):
         if path in self.routes:
@@ -32,13 +41,6 @@ class Muse:
             self.add_route(path, handler)
             return handler
         return wrapper
-
-    def __call__(self, environ, start_response):
-        request = Request(environ)
-
-        response = self.handle_request(request)
-
-        return response(environ, start_response)
 
     def default_response(self, response):
         response.status_code = 404
