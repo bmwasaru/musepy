@@ -15,10 +15,11 @@ from .templates import get_template_env
 
 class Muse:
 
-    def __init__(self, templates_dir="templates"):
+    def __init__(self, templates_dir="templates", static_dir="static"):
         self.routes = {}
         self.templates_env = get_template_env(os.path.abspath(templates_dir))
         self.exception_handler = None
+        self.whitenoise = WhiteNoise(self.wsgi_app, root=static_dir)
 
     def wsgi_app(self, environ, start_response):
         request = Request(environ)
@@ -26,7 +27,7 @@ class Muse:
         return response(environ, start_response)
 
     def __call__(self, environ, start_response):
-        return self.wsgi_app(environ, start_response)
+        return self.whitenoise(environ, start_response)
 
     def add_route(self, path, handler):
         if path in self.routes:
