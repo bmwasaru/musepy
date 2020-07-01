@@ -27,7 +27,7 @@ class Muse:
         return response(environ, start_response)
 
     def __call__(self, environ, start_response):
-        return self.wsgi_app(environ, start_response)
+        return self.whitenoise(environ, start_response)
 
     def add_route(self, path, handler):
         if path in self.routes:
