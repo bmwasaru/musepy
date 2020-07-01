@@ -16,9 +16,16 @@ pytest test_muse.py
 
 ## Running the demo app
 
-The demo application is in the root directory of this repository
+The demo application is in example directory
 
+To run the demo you need to install the framework. This can be done in the root directory of this repository as follows:
 ```bash
+python setup.py install
+```
+
+Change the directory to the example folder
+```bash
+cd example
 gunicorn app:app
 ```
 
