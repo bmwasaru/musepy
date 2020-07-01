@@ -27,3 +27,7 @@ class UsersHandler:
 @app.route('/username/{name}')
 def username(req, resp, name):
     resp.text = app.template("test_example.html", context={'name': 'bmwasaru'})
+
+
+if __name__ == '__main__':
+    app
