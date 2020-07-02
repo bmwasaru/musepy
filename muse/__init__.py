@@ -16,12 +16,17 @@ from .middleware import Middleware
 
 class Muse:
 
-    def __init__(self, templates_dir="templates", static_dir="static"):
+    def __init__(self, templates_dir="templates", static_dir="static", debug=True):
         self.routes = {}
         self.templates_env = get_template_env(os.path.abspath(templates_dir))
         self.exception_handler = None
         self.whitenoise = WhiteNoise(self.wsgi_app, root=static_dir)
         self.middleware = Middleware(self)
+        self._debug = debug
+
+    @property
+    def debug(self):
+        return self._debug
 
     def wsgi_app(self, environ, start_response):
         request = Request(environ)
