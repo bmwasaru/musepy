@@ -1,4 +1,5 @@
 from muse import Muse
+from muse.middleware import Middleware
 
 app = Muse()
 
@@ -7,7 +8,16 @@ def custom_exception_handler(request, response, exception_cls):
     response.text = "Oopsy! Something went wrong."
 
 
+class SimpleMiddleware(Middleware):
+    def process_request(self, req):
+        print("Processing request", req.url)
+
+    def process_response(self, req, resp):
+        print("Processing response", req.url)
+
+
 app.add_exception_handler(custom_exception_handler)
+app.add_middleware(SimpleMiddleware)
 
 
 @app.route('/exception')
