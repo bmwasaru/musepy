@@ -23,9 +23,9 @@ To run the demo you need to install the framework. This can be done in the root 
 python setup.py install
 ```
 
-Change the directory to the example folder
+Change the directory to the demo folder
 ```bash
-cd example
+cd demo
 gunicorn app:app
 ```
 
